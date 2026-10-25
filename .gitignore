@@ -31,3 +31,11 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# --- Project-specific (teaching fork) ---
+# Output image written by `go run cmd/main.go`
+images/result.jpg
+
+# OS clutter (Mac / Windows students)
+.DS_Store
+Thumbs.db
