@@ -7,7 +7,6 @@ go version
 gcc --version | head -1
 node --version
 golangci-lint --version
-golangci-lint-v1 --version
 command -v gomutants && echo "gomutants OK"
 npx --no-install markdownlint-cli2 --version 2>/dev/null | head -1 || true
 openspec --version

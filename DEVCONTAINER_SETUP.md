@@ -13,8 +13,7 @@ What is inside the container (Debian 12 "bookworm", amd64 and arm64):
 | dlib, BLAS/CBLAS (ATLAS), LAPACK, libjpeg | Debian packages | used by `github.com/Kagami/go-face` |
 | gomutants | v0.5.1 (same as the class material) | `gomutants` |
 | gobco | v1.3.4 | `gobco` |
-| golangci-lint v2 | 2.15.0 | `golangci-lint` |
-| golangci-lint v1 | 1.64.8 (reads the repo's current v1 `.golangci.yml`) | `golangci-lint-v1` |
+| golangci-lint v2 | 2.15.0 (uses the repo's `.golangci.yml`) | `golangci-lint` |
 | Node.js | 22.23.4 | `node`, `npx` |
 | OpenSpec CLI | 1.3.1 | `openspec` |
 | markdownlint-cli2 | 0.24.0 | `markdownlint-cli2` or `npx markdownlint-cli2` |
@@ -173,6 +172,7 @@ On the **original commit** (`ad32735`, the starting point of the from-scratch ex
 go mod tidy          # adds the missing go-face requirement to go.mod
 go vet ./...         # OK
 go test ./... -cover # "coverage: 0.0% of statements" for every package (no tests yet)
+golangci-lint run ./... # 10 issues (6 errcheck, 1 ineffassign, 3 staticcheck)
 ```
 
 Notes:
@@ -181,10 +181,8 @@ Notes:
   rewrites `images/result.jpg`. These are tracked files: commit them or run
   `git restore mutation-report.json .gomutants-cache.json images/result.jpg`.
 - `Timed out: 38` in gomutants is expected. These are the same numbers as in the committed report on branch 11.
-- **Lint:** the repo's `.golangci.yml` is in **v1 format**. You have two options:
-  - `golangci-lint-v1 run ./...` works as-is.
-  - `golangci-lint migrate` converts the file, and then `golangci-lint run ./...` (v2) works.
-    On branch 11, both report 7 errcheck and 2 unused findings.
+- **Lint:** the repo ships a v2 `.golangci.yml` (errcheck, govet, ineffassign, staticcheck, unused),
+  so everyone runs `golangci-lint run ./...` with the same rules. Don't create or replace it.
 - The container sees your repo folder live. Edits in Cursor show up in the container immediately,
   and `git` works in both places.
 
@@ -203,7 +201,6 @@ Notes:
 | Corporate proxy / university network blocks downloads | Set the proxy in Docker Desktop (Settings → Resources → Proxies). For the build, add `"build": { "args": { "HTTP_PROXY": "http://proxy:port", "HTTPS_PROXY": "http://proxy:port" } }` to `devcontainer.json`, and add `"remoteEnv": { "HTTP_PROXY": "...", "HTTPS_PROXY": "..." }` for the Go/npm downloads inside. In Cursor, enable **Settings → "Disable HTTP/2"** if the connection hangs. Phone hotspot is a quick test. |
 | `go: ... toolchain not available` | The container sets `GOTOOLCHAIN=local` on purpose. Go 1.26.10 builds this module (`go 1.22.1`). Don't change `go.mod`'s `go` line. |
 | `no required module provides package github.com/Kagami/go-face` | You are on the original commit. Run `go mod tidy`. |
-| `golangci-lint run` → `unsupported version of the configuration` | Use `golangci-lint-v1 run ./...`, or run `golangci-lint migrate` first. |
 | Windows: very slow file access / tests | Clone the repo inside WSL (`~/go-face-recognition` in Ubuntu), open it from Cursor via WSL, then Reopen in Container. |
 | `dubious ownership` from git | Already handled by the post-create script. Otherwise run `git config --global --add safe.directory '*'`. |
 | Disk full | `docker system prune` (removes old containers and images). |

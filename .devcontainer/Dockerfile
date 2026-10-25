@@ -11,9 +11,6 @@ ARG GOLANGCI_LINT_VERSION=2.15.0
 # NOTE: from v0.7.0 the module moved to github.com/gomutants/gomutants, so
 # "go install github.com/szhekpisov/gomutants@latest" no longer works.
 ARG GOMUTANTS_VERSION=v0.5.1
-# Legacy v1 linter, installed as "golangci-lint-v1": the repo's .golangci.yml is
-# in v1 format (v2 needs "golangci-lint migrate" first).
-ARG GOLANGCI_LINT_V1_VERSION=1.64.8
 ARG GOBCO_VERSION=v1.3.4
 ARG OPENSPEC_VERSION=1.3.1
 ARG MARKDOWNLINT_CLI2_VERSION=0.24.0
@@ -50,7 +47,7 @@ RUN set -eux; arch="$(dpkg --print-architecture)"; \
     npm install -g "@fission-ai/openspec@${OPENSPEC_VERSION}" "markdownlint-cli2@${MARKDOWNLINT_CLI2_VERSION}"; \
     npm cache clean --force
 
-# 4) golangci-lint v2 (prebuilt binary).
+# 4) golangci-lint v2 (prebuilt binary); the project standard (config "version: 2").
 RUN set -eux; arch="$(dpkg --print-architecture)"; \
     curl -fsSL "https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_LINT_VERSION}/golangci-lint-${GOLANGCI_LINT_VERSION}-linux-${arch}.tar.gz" \
       | tar -xz -C /tmp; \
@@ -101,15 +98,6 @@ RUN set -eux; \
     cd / && rm -rf /tmp/warm; \
     gomutants --help >/dev/null 2>&1 || true; \
     ls -l "${GOPATH}/bin"
-
-# 7) golangci-lint v1 as "golangci-lint-v1" (works with the repo's current config).
-USER root
-RUN set -eux; arch="$(dpkg --print-architecture)"; \
-    curl -fsSL "https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_LINT_V1_VERSION}/golangci-lint-${GOLANGCI_LINT_V1_VERSION}-linux-${arch}.tar.gz" \
-      | tar -xz -C /tmp; \
-    install -m 0755 "/tmp/golangci-lint-${GOLANGCI_LINT_V1_VERSION}-linux-${arch}/golangci-lint" /usr/local/bin/golangci-lint-v1; \
-    rm -rf /tmp/golangci-lint-*; golangci-lint-v1 --version
-USER ${USERNAME}
 
 ENV NPM_CONFIG_UPDATE_NOTIFIER=false
 WORKDIR /workspaces
