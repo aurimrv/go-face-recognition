@@ -61,7 +61,7 @@ The system enables effortless recognition of faces within images, empowering use
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/andre-ols/go-face-recognition.git
+git clone https://github.com/aurimrv/go-face-recognition.git
 ```
 
 2. Navigate to the project directory:
@@ -88,29 +88,68 @@ This will execute the project inside the Docker container and demonstrate facial
 
 ```
 go-face-recognition/
-├── images/
-│ ├── result.jpg
-│ └── unknown.jpg
-├── persons/
-│ ├── donald_trump/
-│ │ └── ...
-│ └── joe_biden/
-│ └── ...
-├── models/
-│ └── ...
-├── internal/
-│ ├── entity/
-│ └── usecases/
-├── cmd/
-│ └── main.go
-├── Dockerfile
+├── cmd
+│   └── main.go
+├── DEVCONTAINER_SETUP.md
 ├── docker-compose.yml
+├── Dockerfile
+├── fonts
+│   └── Roboto-Regular.ttf
 ├── go.mod
 ├── go.sum
+├── images
+│   ├── Denzel-Washington
+│   │   ├── unknown-01.jpg
+│   │   ├── unknown-02.jpg
+│   │   └── unknown-03.jpg
+│   ├── Kate-Winslet
+│   │   ├── unknown-01.jpg
+│   │   └── unknown-02.jpg
+│   ├── Megan-Fox
+│   │   └── unknown-01.jpg
+│   ├── Tom-Cruise
+│   │   ├── unknown-01.avif
+│   │   ├── unknown-01.jpg
+│   │   ├── unknown-02.avif
+│   │   └── unknown-02.jpg
+│   └── unknown.jpg
+├── internal
+│   ├── entity
+│   │   ├── drawer.go
+│   │   └── person.go
+│   └── usecases
+│       ├── classify_person.go
+│       ├── load_persons.go
+│       └── recognize_persons.go
+├── LICENSE
+├── models
+│   ├── dlib_face_recognition_resnet_model_v1.dat
+│   ├── dnn_age_predictor_v1.dat
+│   ├── dnn_gender_classifier_v1.dat
+│   ├── mmod_human_face_detector.dat
+│   ├── shape_predictor_5_face_landmarks.dat
+│   └── shape_predictor_68_face_landmarks.dat
+├── persons
+│   ├── Denzel-Washington
+│   │   ├── denzel-01.jpg
+│   │   ├── denzel-02.jpg
+│   │   └── denzel-03.jpg
+│   ├── Kate-Winslet
+│   │   ├── kate-01.jpg
+│   │   ├── kate-02.jpg
+│   │   └── kate-03.jpg
+│   ├── Megan-Fox
+│   │   ├── megan-01.jpg
+│   │   ├── megan-02.jpg
+│   │   └── megan-03.jpg
+│   └── Tom-Cruise
+│       ├── tom-01.jpg
+│       ├── tom-02.jpg
+│       └── tom-03.jpg
 └── README.md
 ```
 
-The `images/` directory contains the input and output images. The `persons/` directory contains sub-folders for each person, with images of that person to be used in the model. The `models/` directory contains the trained model for facial recognition. The `internal/` directory contains the core logic of the system, including entities and use cases. The `cmd/` directory contains the main entry point of the system.
+The `persons/` directory contains one sub-folder per known person (Denzel Washington, Kate Winslet, Megan Fox and Tom Cruise), with images of that person used to build the model. The `images/` directory contains the input images: `unknown.jpg` is the default input, and each person's sub-folder holds extra test images of that person that are not used for training. The output image, `result.jpg`, is generated in `images/` when the program runs. The `fonts/` directory contains the font used to write names on the output image. The `models/` directory contains the pre-trained dlib models for face detection, landmarks, recognition, age and gender. The `internal/` directory contains the core logic of the system, including entities and use cases. The `cmd/` directory contains the main entry point of the system.
 
 ## Contributing
 
