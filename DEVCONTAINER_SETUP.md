@@ -166,7 +166,7 @@ PyYAML OK 6.0
 Found 8 faces ... Person: Trump ... Wrote images/result.jpg
 ```
 
-On the **original commit** (`ad32735`, the starting point of the from-scratch exercise), first run:
+On the **original project** (tag `v0-baseline`, the starting point of the from-scratch exercise), first run:
 
 ```bash
 go mod tidy          # adds the missing go-face requirement to go.mod
@@ -200,7 +200,7 @@ Notes:
 | "Failed to install Cursor server" / endless "Opening Remote…" | Update Cursor, and make sure the extension is **Anysphere** Dev Containers (not Microsoft's). The image already has `wget`, which Cursor needs. Turn off VPN and try again. Run **Dev Containers: Rebuild Container**. Check the logs in **View → Output → Dev Containers**. |
 | Corporate proxy / university network blocks downloads | Set the proxy in Docker Desktop (Settings → Resources → Proxies). For the build, add `"build": { "args": { "HTTP_PROXY": "http://proxy:port", "HTTPS_PROXY": "http://proxy:port" } }` to `devcontainer.json`, and add `"remoteEnv": { "HTTP_PROXY": "...", "HTTPS_PROXY": "..." }` for the Go/npm downloads inside. In Cursor, enable **Settings → "Disable HTTP/2"** if the connection hangs. Phone hotspot is a quick test. |
 | `go: ... toolchain not available` | The container sets `GOTOOLCHAIN=local` on purpose. Go 1.26.10 builds this module (`go 1.22.1`). Don't change `go.mod`'s `go` line. |
-| `no required module provides package github.com/Kagami/go-face` | You are on the original commit. Run `go mod tidy`. |
+| `no required module provides package github.com/Kagami/go-face` | You are on the original project (v0-baseline). Run `go mod tidy`. |
 | Windows: very slow file access / tests | Clone the repo inside WSL (`~/go-face-recognition` in Ubuntu), open it from Cursor via WSL, then Reopen in Container. |
 | `dubious ownership` from git | Already handled by the post-create script. Otherwise run `git config --global --add safe.directory '*'`. |
 | Disk full | `docker system prune` (removes old containers and images). |
