@@ -1,0 +1,29 @@
+{
+  "name": "go-face-recognition (Go 1.26 + dlib)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "GOTOOLCHAIN": "local",
+    "CGO_ENABLED": "1"
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb"
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "DavidAnson.vscode-markdownlint"
+      ],
+      "settings": {
+        "go.toolsManagement.autoUpdate": false,
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}
