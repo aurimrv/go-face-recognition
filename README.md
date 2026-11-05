@@ -46,11 +46,29 @@ This project dynamically loads people from within the `persons/` directory. Each
 
 ### Recognition of Faces
 
-After loading the people, the software reads an image from the `images/` directory. By default, it searches for an image named `unknown.jpg`. It then recognizes the faces in the image based on the provided people. The input image can contain multiple people, and the software attempts to recognize all of them.
+After loading the people, the software analyzes one or more JPEG images. By default (no arguments), it reads `images/unknown.jpg`. You can also pass specific image files and/or directories; directories are walked recursively (including subfolders). The input image can contain multiple people, and the software attempts to recognize all of them.
 
 ### Output Generation
 
-The output of the system is a new image with the faces marked and the name of each identified person. The generated image will be saved in the `images/` directory with the name `result.jpg`.
+The output is a new image with faces marked and the name of each identified person:
+
+- Default (no args): `images/result.jpg`
+- Explicit files or directory walks: `result_<original_stem>.jpg` written beside each source image
+
+When walking directories, only `.jpg`/`.jpeg` files are included, and prior outputs (`result.jpg`, `result_*.jpg`) are skipped.
+
+### Examples
+
+```bash
+# Default: images/unknown.jpg -> images/result.jpg
+go run ./cmd
+
+# Specific images
+go run ./cmd images/Kate-Winslet/unknown-01.jpg images/Megan-Fox/unknown-01.jpg
+
+# Album (recursive): result_<stem>.jpg beside each source
+go run ./cmd images/Denzel-Washington/
+```
 
 ### Capabilities
 
@@ -79,10 +97,10 @@ docker compose up --build -d
 4. Run the Docker container:
 
 ```bash
-docker exec go-face-recognition go run cmd/main.go
+docker exec go-face-recognition go run ./cmd
 ```
 
-This will execute the project inside the Docker container and demonstrate facial recognition.
+This runs the default recognition demo (`images/unknown.jpg` → `images/result.jpg`). Pass file or directory paths after `./cmd` to analyze other images.
 
 ## Project Structure
 
